@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const inquirer = require('inquirer');
+
+const questions = [{
+    name: 'firebaseUrl',
+    type: 'input',
+    message: 'Full Firebase URL? (Ex: https://my-h0t-base.firebaseio.com)',
+}, {
+    name: 'firebaseUser',
+    type: 'input',
+    message: 'Firebase user’s ID (uid)?',
+}, {
+    name: 'firebaseSecret',
+    type: 'input',
+    message: 'Firebase secret key (won’t be stored)?',
+}, {
+    name: 'coreId',
+    type: 'input',
+    message: 'Particle core’s ID?',
+}, {
+    name: 'eventName',
+    type: 'input',
+    message: 'Events name?',
+}, {
+    name: 'myDevices',
+    type: 'confirm',
+    message: 'Only apply webhook to your devices?',
+}, {
+    name: 'method',
+    type: 'list',
+    message: 'HTTP method?',
+    choices: ['POST', 'PUT', 'DELETE', 'GET'],
+}];
+
+inquirer.prompt(questions, answers => {
+    console.log(JSON.stringify(template(answers), null, 4));
+});
