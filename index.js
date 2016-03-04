@@ -3,8 +3,27 @@
 const FirebaseTokenGenerator = require('firebase-token-generator');
 
 /**
+ * Template.
+ * @module
+ *
+ * {@link https://docs.particle.io/guide/tools-and-features/webhooks/}
+ * {@link https://www.firebase.com/docs/rest/guide/user-auth.html}
+ *
  * @param {Object} options
- * @returns {string}
+ * @param {string} options.deviceId Particle device’s ID
+ * @param {string} options.eventName Particle device’s event name
+ * @param {string} options.firebaseSecret Firebase app’s secret. Find it in your
+ * app’s dashboard.
+ * @param {string} options.firebaseUrl Firebase URL which the webhook should
+ * hit. Make sure to put your full data path in here.
+ * @param {string} options.firebaseUser
+ * @param {string} [options.expiresIn=10 years] Microseconds from current time
+ * in which the Firebase token will be valid.
+ * @param {string} [options.method=POST] Webhook’s HTTP method.
+ * @param {boolean} [options.myDevices=true] Whether to only hook in to events
+ * from your devices.
+ * {@link https://docs.particle.io/guide/tools-and-features/webhooks/#mydevices}
+ * @returns {string} Formatted JSON webhook.
  */
 function template(options) {
     if (typeof options === 'undefined') {
@@ -13,11 +32,14 @@ function template(options) {
 
     const deviceId = options.deviceId;
     const eventName = options.eventName;
+    const expiresIn = options.expiresIn || 10 * 365.25 * 24 * 60 * 60 * 1000;
     const firebaseSecret = options.firebaseSecret;
     const firebaseUrl = options.firebaseUrl;
     const firebaseUser = options.firebaseUser;
     const method = options.method || 'POST';
-    const myDevices = options.myDevices || false;
+    const myDevices = typeof options.myDevices === 'undefined' ?
+        true :
+        options.myDevices;
 
     if (!eventName) {
         throw new TypeError('Requires event name');
@@ -35,7 +57,7 @@ function template(options) {
     const tokenGenerator = new FirebaseTokenGenerator(firebaseSecret);
     const token = tokenGenerator.createToken(
         { uid: firebaseUser },
-        { expires: Date.now() + 365 * 24 * 60 * 60 * 1000 }
+        { expires: Date.now() + expiresIn }
     );
 
     const output = {
