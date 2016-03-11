@@ -65,10 +65,10 @@ function template(options) {
         url: firebaseUrl + '?auth=' + token,
         requestType: method,
         json: {
-            coreId: '{{SPARK_CORE_ID}}',
-            data: '{{SPARK_EVENT_VALUE}}',
-            event: eventName,
-            publishedAt: '{{SPARK_PUBLISHED_AT}}',
+            "coreid": "{{SPARK_CORE_ID}}",
+            "data": "{{SPARK_EVENT_VALUE}}",
+            "event": "{{SPARK_EVENT_NAME}}",
+            "published_at": "{{SPARK_PUBLISHED_AT}}"
         },
     };
 
