@@ -9,6 +9,29 @@ const FirebaseTokenGenerator = require('firebase-token-generator');
  * {@link https://docs.particle.io/guide/tools-and-features/webhooks/}
  * {@link https://www.firebase.com/docs/rest/guide/user-auth.html}
  *
+ * @example
+ * template({
+ *     deviceId: 'my-unique-id',
+ *     eventName: 'event_',
+ *     firebaseSecret: 'xxx',
+ *     firebaseUrl: 'https://my-hot-base.firebaseio.com/'
+ *     firebaseUser: 'my-unique-id'
+ * });
+ *
+ * // Returns:
+ * {
+ *     event: 'event_',
+ *     url: 'https://my-hot-base.firebaseio.com/?auth=1234567890abcdef',
+ *     requestType: 'POST',
+ *     json: {
+ *         "coreid": "{{SPARK_CORE_ID}}",
+ *         "data": "{{SPARK_EVENT_VALUE}}",
+ *         "event": "{{SPARK_EVENT_NAME}}",
+ *         "published_at": "{{SPARK_PUBLISHED_AT}}"
+ *     },
+ *     mydevices: true,
+ * }
+ *
  * @param {Object} options
  * @param {string} options.deviceId Particle device’s ID
  * @param {string} options.eventName Particle device’s event name
