@@ -89,10 +89,10 @@ tape('HTTP method', t => {
 tape('myDevices option', t => {
     const options = getValidOptions();
 
-    t.equal(template(options).mydevices, false, 'mydevices defaults to false');
+    t.equal(template(options).mydevices, true, 'mydevices defaults to true');
     t.equal(
-        template(assign({}, options, { myDevices: true })).mydevices,
-        true,
+        template(assign({}, options, { myDevices: false })).mydevices,
+        false,
         'passes mydevices param'
     );
     t.end();
