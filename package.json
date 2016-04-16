@@ -4,9 +4,10 @@
   "description": "Generate Particle webhooks that send data to your Firebase",
   "main": "index.js",
   "bin": {
-      "particle-firebase-webhook-generator": "bin/particle-firebase-webhook"
+    "particle-firebase-webhook-generator": "bin/particle-firebase-webhook"
   },
   "scripts": {
+    "lint": "eslint bin/particle-firebase-webhook index.js test.js",
     "test": "node test.js"
   },
   "keywords": [
@@ -24,6 +25,10 @@
     "inquirer": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "eslint-plugin-jsx-a11y": "^0.6.2",
+    "eslint-plugin-react": "^4.3.0",
     "lodash.assign": "^4.0.8",
     "mockery": "^1.6.2",
     "tape": "^4.5.1"

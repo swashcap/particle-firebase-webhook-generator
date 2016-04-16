@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+/* eslint object-shorthand:0, strict:0 */
 'use strict';
 
 const inquirer = require('inquirer');
@@ -7,52 +7,53 @@ const template = require('../index.js');
 
 const DAY = 24 * 60 * 60 * 1000;
 const expiresIn = {
-    '10 years': 10 * 365.25 * DAY,
-    '1 year': 365 * DAY,
-    '30 days': 30 * DAY,
-    '1 week': 7 * DAY,
-    '1 day': DAY,
+  '10 years': 10 * 365.25 * DAY,
+  '1 year': 365 * DAY,
+  '30 days': 30 * DAY,
+  '1 week': 7 * DAY,
+  '1 day': DAY,
 };
 const questions = [{
-    name: 'firebaseUrl',
-    type: 'input',
-    message: 'Full Firebase URL? (Ex: https://my-h0t-base.firebaseio.com)',
+  name: 'firebaseUrl',
+  type: 'input',
+  message: 'Full Firebase URL? (Ex: https://my-h0t-base.firebaseio.com)',
 }, {
-    name: 'firebaseUser',
-    type: 'input',
-    message: 'Firebase user’s ID (uid)?',
+  name: 'firebaseUser',
+  type: 'input',
+  message: 'Firebase user’s ID (uid)?',
 }, {
-    name: 'firebaseSecret',
-    type: 'password',
-    message: 'Firebase secret key (won’t be stored)?',
+  name: 'firebaseSecret',
+  type: 'password',
+  message: 'Firebase secret key (won’t be stored)?',
 }, {
-    name: 'coreId',
-    type: 'input',
-    message: 'Particle core’s ID?',
+  name: 'coreId',
+  type: 'input',
+  message: 'Particle core’s ID?',
 }, {
-    name: 'eventName',
-    type: 'input',
-    message: 'Events name?',
+  name: 'eventName',
+  type: 'input',
+  message: 'Events name?',
 }, {
-    name: 'myDevices',
-    type: 'confirm',
-    message: 'Only apply webhook to your devices?',
+  name: 'myDevices',
+  type: 'confirm',
+  message: 'Only apply webhook to your devices?',
 }, {
-    name: 'method',
-    type: 'list',
-    message: 'HTTP method?',
-    choices: ['POST', 'PUT', 'DELETE', 'GET'],
+  name: 'method',
+  type: 'list',
+  message: 'HTTP method?',
+  choices: ['POST', 'PUT', 'DELETE', 'GET'],
 }, {
-    name: 'expiresIn',
-    type: 'list',
-    message: 'Firebase token expires in?',
-    choices: Object.keys(expiresIn),
-    filter: (value) => expiresIn[value],
+  name: 'expiresIn',
+  type: 'list',
+  message: 'Firebase token expires in?',
+  choices: Object.keys(expiresIn),
+  filter: (value) => expiresIn[value],
 }];
 
+/* eslint-disable no-console */
 inquirer.prompt(questions)
-    .then(answers => {
-        console.log(JSON.stringify(template(answers), null, 4));
-    })
-    .catch(error => console.error(error));
-
+  .then(answers => {
+    console.log(JSON.stringify(template(answers), null, 4));
+  })
+  .catch(error => console.error(error));
+/* eslint-enable no-console */

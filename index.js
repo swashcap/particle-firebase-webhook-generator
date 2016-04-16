@@ -1,3 +1,4 @@
+/* eslint object-shorthand:0, strict:0 */
 'use strict';
 
 const FirebaseTokenGenerator = require('firebase-token-generator');
@@ -11,29 +12,27 @@ const FirebaseTokenGenerator = require('firebase-token-generator');
  *
  * @example
  * template({
- *     deviceId: 'my-unique-id',
- *     eventName: 'event_',
- *     firebaseSecret: 'xxx',
- *     firebaseUrl: 'https://my-hot-base.firebaseio.com/'
- *     firebaseUser: 'my-unique-id'
+ *   eventName: 'event_',
+ *   firebaseSecret: 'xxx',
+ *   firebaseUrl: 'https://my-hot-base.firebaseio.com/'
+ *   firebaseUser: 'my-unique-id'
  * });
  *
  * // Returns:
  * {
- *     event: 'event_',
- *     url: 'https://my-hot-base.firebaseio.com/?auth=1234567890abcdef',
- *     requestType: 'POST',
- *     json: {
- *         "coreid": "{{SPARK_CORE_ID}}",
- *         "data": "{{SPARK_EVENT_VALUE}}",
- *         "event": "{{SPARK_EVENT_NAME}}",
- *         "published_at": "{{SPARK_PUBLISHED_AT}}"
- *     },
- *     mydevices: true,
+ *   event: 'event_',
+ *   url: 'https://my-hot-base.firebaseio.com/?auth=1234567890abcdef',
+ *   requestType: 'POST',
+ *   json: {
+ *     "coreid": "{{SPARK_CORE_ID}}",
+ *     "data": "{{SPARK_EVENT_VALUE}}",
+ *     "event": "{{SPARK_EVENT_NAME}}",
+ *     "published_at": "{{SPARK_PUBLISHED_AT}}"
+ *   },
+ *   mydevices: true,
  * }
  *
  * @param {Object} options
- * @param {string} options.deviceId Particle device’s ID
  * @param {string} options.eventName Particle device’s event name
  * @param {string} options.firebaseSecret Firebase app’s secret. Find it in your
  * app’s dashboard.
@@ -49,55 +48,54 @@ const FirebaseTokenGenerator = require('firebase-token-generator');
  * @returns {string} Formatted JSON webhook.
  */
 function template(options) {
-    if (typeof options === 'undefined') {
-        options = {};
-    }
+  if (typeof options === 'undefined') {
+    throw new Error('Expected options to be an object.');
+  }
 
-    const deviceId = options.deviceId;
-    const eventName = options.eventName;
-    const expiresIn = options.expiresIn || 10 * 365.25 * 24 * 60 * 60 * 1000;
-    const firebaseSecret = options.firebaseSecret;
-    const firebaseUrl = options.firebaseUrl;
-    const firebaseUser = options.firebaseUser;
-    const method = options.method || 'POST';
-    const myDevices = typeof options.myDevices === 'undefined' ?
-        true :
-        options.myDevices;
+  const eventName = options.eventName;
+  const expiresIn = options.expiresIn || 10 * 365.25 * 24 * 60 * 60 * 1000;
+  const firebaseSecret = options.firebaseSecret;
+  const firebaseUrl = options.firebaseUrl;
+  const firebaseUser = options.firebaseUser;
+  const method = options.method || 'POST';
+  const myDevices = typeof options.myDevices === 'undefined' ?
+    true :
+    options.myDevices;
 
-    if (!eventName) {
-        throw new TypeError('Requires event name');
-    }
-    if (!firebaseSecret) {
-        throw new TypeError('Requires Firebase secret');
-    }
-    if (!firebaseUrl) {
-        throw new TypeError('Requires Firebase URL');
-    }
-    if (!firebaseUser) {
-        throw new TypeError('Requires Firebase user ID');
-    }
+  if (!eventName) {
+    throw new TypeError('Requires event name');
+  }
+  if (!firebaseSecret) {
+    throw new TypeError('Requires Firebase secret');
+  }
+  if (!firebaseUrl) {
+    throw new TypeError('Requires Firebase URL');
+  }
+  if (!firebaseUser) {
+    throw new TypeError('Requires Firebase user ID');
+  }
 
-    const tokenGenerator = new FirebaseTokenGenerator(firebaseSecret);
-    const token = tokenGenerator.createToken(
-        { uid: firebaseUser },
-        { expires: Date.now() + expiresIn }
-    );
+  const tokenGenerator = new FirebaseTokenGenerator(firebaseSecret);
+  const token = tokenGenerator.createToken(
+    { uid: firebaseUser },
+    { expires: Date.now() + expiresIn }
+  );
 
-    const output = {
-        event: eventName,
-        url: firebaseUrl + '?auth=' + token,
-        requestType: method,
-        json: {
-            "coreid": "{{SPARK_CORE_ID}}",
-            "data": "{{SPARK_EVENT_VALUE}}",
-            "event": "{{SPARK_EVENT_NAME}}",
-            "published_at": "{{SPARK_PUBLISHED_AT}}"
-        },
-    };
+  const output = {
+    event: eventName,
+    url: firebaseUrl + '?auth=' + token, // eslint-disable-line prefer-template
+    requestType: method,
+    json: {
+      coreid: '{{SPARK_CORE_ID}}',
+      data: '{{SPARK_EVENT_VALUE}}',
+      event: '{{SPARK_EVENT_NAME}}',
+      published_at: '{{SPARK_PUBLISHED_AT}}',
+    },
+  };
 
-    output.mydevices = myDevices ? true : false;
+  output.mydevices = !!myDevices;
 
-    return output;
+  return output;
 }
 
 module.exports = template;
