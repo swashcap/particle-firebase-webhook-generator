@@ -50,6 +50,9 @@ const questions = [{
     filter: (value) => expiresIn[value],
 }];
 
-inquirer.prompt(questions, answers => {
-    console.log(JSON.stringify(template(answers), null, 4));
-});
+inquirer.prompt(questions)
+    .then(answers => {
+        console.log(JSON.stringify(template(answers), null, 4));
+    })
+    .catch(error => console.error(error));
+
