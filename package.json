@@ -8,7 +8,8 @@
   },
   "scripts": {
     "lint": "eslint bin/particle-firebase-webhook index.js test.js",
-    "test": "node test.js"
+    "test": "node test.js",
+    "validate": "npm ls"
   },
   "keywords": [
     "particle",
@@ -31,6 +32,12 @@
     "eslint-plugin-react": "^4.3.0",
     "lodash.assign": "^4.0.8",
     "mockery": "^1.6.2",
+    "pre-commit": "^1.1.2",
     "tape": "^4.5.1"
-  }
+  },
+  "pre-commit": [
+    "validate",
+    "lint",
+    "test"
+  ]
 }
